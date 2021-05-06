@@ -1,0 +1,49 @@
+version: "3.8"
+
+networks:
+  coonet:
+
+services:
+  coonet-php-apache-service:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    container_name: coonet-webserver-container
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www/html
+      - ./apache/virtualhost.conf:/etc/apache2/sites-available/000-default.conf
+    networks:
+      - coonet
+    depends_on:
+      - coonet-mysql-service
+
+  coonet-mysql-service:
+    image: mysql:5.7
+    container_name: coonet-mysql-container
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - coonet
+
+  coonet-phpmyadmin-service:
+    depends_on:
+      - coonet-mysql-service
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8088:80"
+    environment:
+      PMA_HOST: coonet-mysql-service
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - coonet
