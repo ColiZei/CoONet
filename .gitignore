@@ -1,4 +1,5 @@
 .idea
 php.sh
 .env
-mysql
+mysql/data*
+logs/*
