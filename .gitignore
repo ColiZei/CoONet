@@ -1,0 +1,5 @@
+.idea
+php.sh
+.env
+mysql/data*
+logs/*
