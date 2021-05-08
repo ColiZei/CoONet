@@ -28,6 +28,10 @@ Use `coonet-mysql-service` as hostname
 
 `docker-compose exec coonet-php-apache-service doctrine:schema:create`
 
+Load fake data:
+
+`docker-compose exec coonet-php-apache-service doctrine:fixtures:load`
+
 ## Stop Docker
 
 `docker-compose down`
