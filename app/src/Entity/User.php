@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     normalizationContext={"groups"={"user:read"}},
  *     denormalizationContext={"groups"={"user:write"}}
  * )
- * @UniqueEntity(fields={"username"})
  * @UniqueEntity(fields={"email"})
  *
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -50,11 +49,10 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
-     * @Groups({"user:read", "user:write"})
-     * @Assert\NotBlank()
+     * @ORM\OneToOne(targetEntity=UserData::class, inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $username;
+    private $userData;
 
     public function getId(): ?int
     {
@@ -80,7 +78,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->username;
+        return (string) $this->email;
     }
 
     /**
@@ -137,9 +135,14 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function setUsername(string $username): self
+    public function getUserData(): ?UserData
     {
-        $this->username = $username;
+        return $this->userData;
+    }
+
+    public function setUserData(UserData $userData): self
+    {
+        $this->userData = $userData;
 
         return $this;
     }
