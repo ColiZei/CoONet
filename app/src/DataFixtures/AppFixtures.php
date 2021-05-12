@@ -72,6 +72,7 @@ class AppFixtures extends Fixture
             );
             $user->setRoles($userData['roles']);
 
+
             // UserData
             $userDataEntity = new UserData();
             $userDataEntity->setFirstName($userData['userData']['firstName']);
