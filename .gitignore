@@ -3,3 +3,4 @@ php.sh
 .env
 mysql/data*
 logs/*
+request.http
