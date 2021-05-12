@@ -2,10 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserDataRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *     normalizationContext={"groups"={"userdata:read"}},
+ *     denormalizationContext={"groups"={"userdata:write"}}
+ * )
  * @ORM\Entity(repositoryClass=UserDataRepository::class)
  */
 class UserData
@@ -19,26 +25,31 @@ class UserData
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"userdata:read", "userdata:write"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"userdata:read", "userdata:write"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"userdata:read", "userdata:write"})
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255, columnDefinition="enum('male', 'female', 'diverse')")
+     * @Groups({"userdata:read", "userdata:write"})
      */
     private $gender;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"userdata:read", "userdata:write"})
      */
     private $dayOfBirth;
 
@@ -49,16 +60,20 @@ class UserData
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"userdata:read", "userdata:write"})
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"userdata:read", "userdata:write"})
      */
     private $country;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, mappedBy="userData", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="userData", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"userdata:read", "userdata:write"})
      */
     private $user;
 
@@ -163,6 +178,7 @@ class UserData
         return $this;
     }
 
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -170,11 +186,6 @@ class UserData
 
     public function setUser(User $user): self
     {
-        // set the owning side of the relation if necessary
-        if ($user->getUserData() !== $this) {
-            $user->setUserData($this);
-        }
-
         $this->user = $user;
 
         return $this;
