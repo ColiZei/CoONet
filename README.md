@@ -32,6 +32,9 @@ Load fake data:
 
 `docker-compose exec coonet-php-apache-service doctrine:fixtures:load`
 
+## Generate Keys for JWT
+Documentation: https://api-platform.com/docs/core/jwt/
+
 ## Stop Docker
 
 `docker-compose down`
