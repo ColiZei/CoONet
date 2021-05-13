@@ -2,7 +2,7 @@
 
 A Social Network Project to practice Vue.js and Symfony API Platform
 
-# Installation
+# Server Installation
 
 ## Environment Variables
 
@@ -16,7 +16,7 @@ Copy `.env_example` to `.env` and set the variables.
 
 `docker-compose exec coonet-php-apache-service composer install`
 
-## Setup Symfony Database Environment Variables in `/app/.env`
+## Setup Symfony Database Environment Variables in `/server/.env`
 
 Use the mysql driver instead of postgresql:
 
@@ -33,18 +33,33 @@ Load fake data:
 `docker-compose exec coonet-php-apache-service doctrine:fixtures:load`
 
 ## Generate Keys for JWT
+
 Documentation: https://api-platform.com/docs/core/jwt/
 
 ## Stop Docker
 
 `docker-compose down`
 
+# Client Installation
+
+`cd client/`
+
+## Install NPM Dependencies
+
+`npm install`
+
 # Developing
 
-## Start Docker
+## Start Server
 
 `docker-compose up -d`
 
-## Stop Docker
+## Stop Server
 
 `docker-compose down`
+
+## Start Client
+
+`cd client/`
+
+`npm run server`
