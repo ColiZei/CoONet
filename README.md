@@ -2,7 +2,7 @@
 
 A Social Network Project to practice Vue.js and Symfony API Platform
 
-# Installation
+# Server Installation
 
 ## Environment Variables
 
@@ -40,12 +40,26 @@ Documentation: https://api-platform.com/docs/core/jwt/
 
 `docker-compose down`
 
+# Client Installation
+
+`cd client/`
+
+## Install NPM Dependencies
+
+`npm install`
+
 # Developing
 
-## Start Docker
+## Start Server
 
 `docker-compose up -d`
 
-## Stop Docker
+## Stop Server
 
 `docker-compose down`
+
+## Start Client
+
+`cd client/`
+
+`npm run server`
