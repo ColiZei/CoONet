@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -53,6 +55,18 @@ class User implements UserInterface
      * @Groups({"user:read", "user:write"})
      */
     private $userData;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="friends")
+     * @ORM\JoinTable(name="user_friends")
+     * @Groups({"user:read", "user:write"})
+     */
+    private $friends;
+
+    public function __construct()
+    {
+        $this->friends = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -149,6 +163,30 @@ class User implements UserInterface
         }
 
         $this->userData = $userData;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getFriends(): Collection
+    {
+        return $this->friends;
+    }
+
+    public function addFriend(self $friend): self
+    {
+        if (!$this->friends->contains($friend)) {
+            $this->friends[] = $friend;
+        }
+
+        return $this;
+    }
+
+    public function removeFriend(self $friend): self
+    {
+        $this->friends->removeElement($friend);
 
         return $this;
     }
