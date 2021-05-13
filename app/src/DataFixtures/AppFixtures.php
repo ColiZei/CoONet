@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use App\Entity\UserData;
+use App\Entity\UserPosts;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -24,6 +25,10 @@ class AppFixtures extends Fixture
                 'city' => 'Doetown',
                 'country' => 'US',
             ],
+            'userPosts' => [
+                [ 'content' => 'This is a post from John!' ],
+                [ 'content' => 'This is another post from John!' ],
+            ]
         ],
         [
             'email' => 'jane_doe@doe.com',
@@ -38,6 +43,10 @@ class AppFixtures extends Fixture
                 'city' => 'Doetown',
                 'country' => 'US',
             ],
+            'userPosts' => [
+                [ 'content' => 'This is a post from Jane!' ],
+                [ 'content' => 'This is another post from Jane!' ],
+            ]
         ],
     ];
 
@@ -85,6 +94,15 @@ class AppFixtures extends Fixture
             $userDataEntity->setRegistered(new \DateTime(sprintf('-%d days', rand(1, 100))));
 
             $user->setUserData($userDataEntity);
+
+            // UserPosts
+            foreach ($userData['userPosts'] as $post) {
+                $userPost = new UserPosts();
+                $userPost->setContent($post['content']);
+                $userPost->setCreatedAt(new \DateTime(sprintf('-%d days', rand(1, 100))));
+
+                $user->addUserPost($userPost);
+            }
 
             $manager->persist($user);
         }

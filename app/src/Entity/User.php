@@ -64,7 +64,7 @@ class User implements UserInterface
     private $friends;
 
     /**
-     * @ORM\OneToMany(targetEntity=UserPosts::class, mappedBy="author", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=UserPosts::class, mappedBy="author", orphanRemoval=true, cascade={"persist"})
      */
     private $userPosts;
 
