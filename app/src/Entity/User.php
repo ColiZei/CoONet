@@ -63,9 +63,15 @@ class User implements UserInterface
      */
     private $friends;
 
+    /**
+     * @ORM\OneToMany(targetEntity=UserPosts::class, mappedBy="author", orphanRemoval=true)
+     */
+    private $userPosts;
+
     public function __construct()
     {
         $this->friends = new ArrayCollection();
+        $this->userPosts = new ArrayCollection();
     }
 
 
@@ -187,6 +193,36 @@ class User implements UserInterface
     public function removeFriend(self $friend): self
     {
         $this->friends->removeElement($friend);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserPosts[]
+     */
+    public function getUserPosts(): Collection
+    {
+        return $this->userPosts;
+    }
+
+    public function addUserPost(UserPosts $userPost): self
+    {
+        if (!$this->userPosts->contains($userPost)) {
+            $this->userPosts[] = $userPost;
+            $userPost->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserPost(UserPosts $userPost): self
+    {
+        if ($this->userPosts->removeElement($userPost)) {
+            // set the owning side to null (unless already changed)
+            if ($userPost->getAuthor() === $this) {
+                $userPost->setAuthor(null);
+            }
+        }
 
         return $this;
     }
