@@ -29,6 +29,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { mapActions } from "vuex";
 import { Form, Field, ErrorMessage } from "vee-validate";
 
 export default defineComponent({
@@ -47,12 +48,16 @@ export default defineComponent({
     };
   },
   methods: {
+    ...mapActions(["LOGIN"]),
     async submitForm() {
-      console.log("submit!");
-
       this.isLoading = true;
       try {
-        // ...
+        await this.LOGIN({
+          email: this.email,
+          password: this.password,
+        });
+
+        this.$router.replace("/");
       } catch (err) {
         this.error = err;
       }
