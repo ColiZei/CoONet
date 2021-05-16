@@ -19,7 +19,7 @@ export default defineComponent({
   },
   computed: {
     layout() {
-      return this.$route.meta.layout || "ThreeColumnsWithHeader";
+      return this.$route.meta.layout || "threecolumns-with-header";
     },
   },
 });
