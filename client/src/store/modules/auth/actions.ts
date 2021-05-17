@@ -6,7 +6,9 @@ import { Mutations } from "./mutations";
 import { ActionTypes } from "./action-types";
 import { MutationTypes } from "./mutation-types";
 
-import jwt_decode from "jwt-decode";
+import jwtDecode from "jwt-decode";
+import { ApiJwtPayload } from "@/types/token";
+
 const tokenUrl: string = process.env.VUE_APP_TOKEN_URL;
 let timer: number;
 
@@ -61,9 +63,9 @@ export const actions: ActionTree<AuthState, RootState> & Actions = {
     }
 
     const token = resData.token;
-    const tokenDecoded: any = jwt_decode(token);
+    const tokenDecoded = jwtDecode<ApiJwtPayload>(token);
 
-    const expiresIn = +tokenDecoded.exp * 1000;
+    const expiresIn = tokenDecoded.exp * 1000;
     const expirationDate: any = new Date().getTime() + expiresIn;
 
     localStorage.setItem("token", token);
@@ -97,7 +99,7 @@ export const actions: ActionTree<AuthState, RootState> & Actions = {
     }, expiresIn);
 
     if (token !== "") {
-      const tokenDecoded: any = jwt_decode(token);
+      const tokenDecoded = jwtDecode<ApiJwtPayload>(token);
 
       commit(MutationTypes.SET_USER, {
         token,
