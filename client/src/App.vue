@@ -10,7 +10,7 @@ import ThreeColumnsWithHeader from "./layouts/ThreeColumnsWithHeader.vue";
 import FullWidthWithFooter from "./layouts/FullWidthWithFooter.vue";
 import FullWidthWithHeaderAndFooter from "./layouts/FullWidthWithHeaderAndFooter.vue";
 
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default defineComponent({
   name: "App",
@@ -19,16 +19,23 @@ export default defineComponent({
     "fullwidth-with-footer": FullWidthWithFooter,
     "fullwidth-with-header-and-footer": FullWidthWithHeaderAndFooter,
   },
+  watch: {
+    didAutoLogout(currVal: boolean, oldVal: boolean) {
+      if (currVal && currVal !== oldVal) {
+        this.$router.replace({ name: "Login" });
+      }
+    },
+  },
+  computed: {
+    ...mapGetters(["didAutoLogout"]),
+    layout() {
+      return this.$route.meta.layout || "threecolumns-with-header";
+    },
+  },
   methods: {
     ...mapActions(["AUTOLOGIN"]),
     autologin() {
       this.AUTOLOGIN();
-    },
-  },
-
-  computed: {
-    layout() {
-      return this.$route.meta.layout || "threecolumns-with-header";
     },
   },
   created() {
