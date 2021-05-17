@@ -6,7 +6,9 @@ import { Mutations } from "./mutations";
 import { ActionTypes } from "./action-types";
 import { MutationTypes } from "./mutation-types";
 
-import jwt_decode from "jwt-decode";
+import jwtDecode from "jwt-decode";
+import { ApiJwtPayload } from "@/types/token";
+
 const tokenUrl: string = process.env.VUE_APP_TOKEN_URL;
 let timer: number;
 
@@ -26,6 +28,7 @@ export interface Actions {
   ): void;
 
   [ActionTypes.AUTOLOGIN]({ commit }: AugmentedActionContext): void;
+  [ActionTypes.AUTOLOGOUT]({ commit }: AugmentedActionContext): void;
 }
 
 export const actions: ActionTree<AuthState, RootState> & Actions = {
@@ -38,6 +41,7 @@ export const actions: ActionTree<AuthState, RootState> & Actions = {
     commit(MutationTypes.SET_USER, {
       token: "",
       user: {},
+      didAutoLogout: false,
     });
   },
 
@@ -61,16 +65,16 @@ export const actions: ActionTree<AuthState, RootState> & Actions = {
     }
 
     const token = resData.token;
-    const tokenDecoded: any = jwt_decode(token);
+    const tokenDecoded = jwtDecode<ApiJwtPayload>(token);
 
-    const expiresIn = +tokenDecoded.exp * 1000;
+    const expiresIn = tokenDecoded.exp * 1000;
     const expirationDate: any = new Date().getTime() + expiresIn;
 
     localStorage.setItem("token", token);
     localStorage.setItem("tokenExpiration", expirationDate);
 
     timer = setTimeout(() => {
-      dispatch(ActionTypes.LOGOUT);
+      dispatch(ActionTypes.AUTOLOGOUT);
     }, expiresIn);
 
     commit(MutationTypes.SET_USER, {
@@ -79,6 +83,7 @@ export const actions: ActionTree<AuthState, RootState> & Actions = {
         username: tokenDecoded.username,
         roles: tokenDecoded.roles,
       },
+      didAutoLogout: false,
     });
   },
 
@@ -93,11 +98,11 @@ export const actions: ActionTree<AuthState, RootState> & Actions = {
     }
 
     timer = setTimeout(() => {
-      dispatch(ActionTypes.LOGOUT);
+      dispatch(ActionTypes.AUTOLOGOUT);
     }, expiresIn);
 
     if (token !== "") {
-      const tokenDecoded: any = jwt_decode(token);
+      const tokenDecoded = jwtDecode<ApiJwtPayload>(token);
 
       commit(MutationTypes.SET_USER, {
         token,
@@ -105,7 +110,12 @@ export const actions: ActionTree<AuthState, RootState> & Actions = {
           username: tokenDecoded.username,
           roles: tokenDecoded.roles,
         },
+        didAutoLogout: false,
       });
     }
+  },
+  [ActionTypes.AUTOLOGOUT]({ commit, dispatch }) {
+    dispatch(ActionTypes.LOGOUT);
+    commit(MutationTypes.SET_DIDAUTOLOGOUT, true);
   },
 };

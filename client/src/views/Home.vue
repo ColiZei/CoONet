@@ -16,6 +16,7 @@ export default defineComponent({
     ...mapActions(["LOGOUT"]),
     logoutClicked() {
       this.LOGOUT();
+      this.$router.replace({ name: "Login" });
     },
   },
 });
