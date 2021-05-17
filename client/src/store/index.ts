@@ -3,6 +3,7 @@ import {
   Store as VuexStore,
   CommitOptions,
   DispatchOptions,
+  createLogger,
 } from "vuex";
 
 import { RootState, state } from "./state";
@@ -12,6 +13,8 @@ import { Actions, actions } from "./actions";
 
 import { authModule } from "./modules/auth/index";
 
+const debug = process.env.NODE_ENV !== "production";
+
 export const store = createStore({
   state,
   mutations,
@@ -20,6 +23,8 @@ export const store = createStore({
   modules: {
     authModule,
   },
+  strict: debug,
+  plugins: debug ? [createLogger<RootState>()] : [],
 });
 
 export type Store = Omit<
