@@ -67,7 +67,7 @@ export const actions: ActionTree<AuthState, RootState> & Actions = {
     const token = resData.token;
     const tokenDecoded = jwtDecode<ApiJwtPayload>(token);
 
-    const expiresIn = tokenDecoded.exp * 1000;
+    const expiresIn = (tokenDecoded.exp - tokenDecoded.iat) * 1000;
     const expirationDate: any = new Date().getTime() + expiresIn;
 
     localStorage.setItem("token", token);
