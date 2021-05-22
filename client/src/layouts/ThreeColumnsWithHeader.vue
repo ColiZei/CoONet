@@ -1,10 +1,12 @@
 <template>
-  <div>Header</div>
-  <div>Left Row</div>
-  <div>
-    <router-view></router-view>
+  <base-card>Header</base-card>
+  <div class="flex">
+    <base-card>Left Row</base-card>
+    <div>
+      <router-view></router-view>
+    </div>
+    <base-card>Right Row</base-card>
   </div>
-  <div>Right Row</div>
 </template>
 
 <script lang="ts">

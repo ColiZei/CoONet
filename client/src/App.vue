@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="border min-h-screen flex flex-col">
     <component :is="layout"></component>
   </div>
 </template>

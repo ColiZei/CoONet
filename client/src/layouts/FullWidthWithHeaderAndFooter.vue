@@ -1,9 +1,9 @@
 <template>
-  <div>header</div>
+  <base-card>header</base-card>
   <div>
     <router-view></router-view>
   </div>
-  <div>Footer</div>
+  <base-card>Footer</base-card>
 </template>
 
 <script lang="ts">
