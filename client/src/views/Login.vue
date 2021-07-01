@@ -47,6 +47,9 @@
               </div>
             </vv-field>
           </div>
+
+          <div class="error text-red-500" v-if="!!error">{{ error }}</div>
+
           <div class="pt-4">
             <base-button primary :disabled="isLoading" class="w-full">
               {{ isLoading ? "Loading..." : "Anmelden" }}
@@ -58,7 +61,6 @@
         </vv-form>
       </div>
     </base-card>
-    <div class="error" v-if="!!error">{{ error }}</div>
   </div>
 </template>
 
