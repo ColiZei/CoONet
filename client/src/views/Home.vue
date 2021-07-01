@@ -1,23 +1,11 @@
 <template>
-  <div class="home">
-    HOME!
-    <button @click="logoutClicked">Logout</button>
-  </div>
+  <base-card class="home"> HOME! </base-card>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { mapActions } from "vuex";
 
 export default defineComponent({
   name: "Home",
-  computed: {},
-  methods: {
-    ...mapActions(["LOGOUT"]),
-    logoutClicked() {
-      this.LOGOUT();
-      this.$router.replace({ name: "Login" });
-    },
-  },
 });
 </script>

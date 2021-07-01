@@ -1,30 +1,67 @@
 <template>
-  <div class="login">
-    <vv-form @submit="submitForm">
-      <vv-field
-        type="email"
-        name="email"
-        placeholder="E-Mail-Adresse"
-        rules="required|email"
-        v-model.trim="email"
-      />
-      <vv-error name="email" />
+  <div class="flex justify-center flex-col md:flex-row">
+    <base-card transparent class="md:w-1/4">
+      <h1 class="text-2xl font-black">Soziales Netzwerk!</h1>
+      <span class="text-green-100 italic">Super cool hier!</span>
+    </base-card>
 
-      <vv-field
-        type="password"
-        name="password"
-        placeholder="Passwort"
-        rules="required"
-        v-model.trim="password"
-      />
-      <vv-error name="password" />
+    <base-card class="md:w-1/4">
+      <div>
+        <vv-form @submit="submitForm">
+          <div>
+            <vv-field
+              name="email"
+              rules="required|email"
+              v-model.trim="email"
+              v-slot="{ field, errors }"
+            >
+              <base-input
+                :error="errors.length > 0"
+                placeholder="E-Mail-Adresse"
+                type="email"
+                v-bind="field"
+                class="w-full"
+              />
+              <div class="text-sm mt-2">
+                <vv-error class="text-red-500" name="email" />
+              </div>
+            </vv-field>
+          </div>
 
-      <button :disabled="isLoading">
-        {{ isLoading ? "Loading..." : "Anmelden" }}
-      </button>
-    </vv-form>
+          <div class="pt-4">
+            <vv-field
+              rules="required"
+              name="password"
+              v-model.trim="password"
+              v-slot="{ field, errors }"
+            >
+              <base-input
+                :error="errors.length > 0"
+                placeholder="Passwort"
+                type="password"
+                v-bind="field"
+                class="w-full"
+              />
+              <div class="text-sm mt-2">
+                <vv-error class="text-red-500" name="password" />
+              </div>
+            </vv-field>
+          </div>
+
+          <div class="error text-red-500" v-if="!!error">{{ error }}</div>
+
+          <div class="pt-4">
+            <base-button primary :disabled="isLoading" class="w-full">
+              {{ isLoading ? "Loading..." : "Anmelden" }}
+            </base-button>
+          </div>
+          <div class="pt-4">
+            <base-button class="w-full">Neues Konto erstellen</base-button>
+          </div>
+        </vv-form>
+      </div>
+    </base-card>
   </div>
-  <div class="error" v-if="!!error">{{ error }}</div>
 </template>
 
 <script lang="ts">

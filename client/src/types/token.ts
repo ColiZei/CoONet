@@ -4,4 +4,5 @@ export interface ApiJwtPayload extends JwtPayload {
   username: string;
   roles: string[];
   exp: number;
+  iat: number;
 }
