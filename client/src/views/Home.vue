@@ -1,8 +1,8 @@
 <template>
-  <div class="home">
+  <base-card class="home">
     HOME!
     <button @click="logoutClicked">Logout</button>
-  </div>
+  </base-card>
 </template>
 
 <script lang="ts">
