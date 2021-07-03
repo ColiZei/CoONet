@@ -22,9 +22,6 @@ export default defineComponent({
   components: {
     LogoutButton,
   },
-  data() {
-    return {};
-  },
 });
 </script>
 
