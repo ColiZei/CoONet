@@ -27,6 +27,11 @@ export default defineComponent({
       required: false,
       default: "text",
     },
+    placeholder: {
+      type: String,
+      required: false,
+      default: "",
+    },
   },
 });
 </script>
