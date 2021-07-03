@@ -59,7 +59,6 @@
             <base-button class="w-full">Neues Konto erstellen</base-button>
           </div>
         </vv-form>
-        <div>{{ testVar }}</div>
       </div>
     </base-card>
   </div>
@@ -69,7 +68,6 @@
 import { defineComponent } from "vue";
 import { mapActions } from "vuex";
 import { Form, Field, ErrorMessage } from "vee-validate";
-import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "Login",
@@ -77,11 +75,6 @@ export default defineComponent({
     "vv-form": Form,
     "vv-field": Field,
     "vv-error": ErrorMessage,
-  },
-  setup() {
-    const { t } = useI18n();
-    const testVar = t("message");
-    return { testVar };
   },
   data() {
     return {
