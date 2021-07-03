@@ -68,6 +68,7 @@ export const actions: ActionTree<AuthState, RootState> & Actions = {
     const tokenDecoded = jwtDecode<ApiJwtPayload>(token);
 
     const expiresIn = (tokenDecoded.exp - tokenDecoded.iat) * 1000;
+    /* eslint-disable-next-line */
     const expirationDate: any = new Date().getTime() + expiresIn;
 
     localStorage.setItem("token", token);
@@ -90,7 +91,9 @@ export const actions: ActionTree<AuthState, RootState> & Actions = {
   [ActionTypes.AUTOLOGIN]({ commit, dispatch }) {
     const token = localStorage.getItem("token") || "";
 
+    /* eslint-disable-next-line */
     const tokenExpiration: any = localStorage.getItem("tokenExpiration");
+    /* eslint-disable-next-line */
     const expiresIn: any = +tokenExpiration - new Date().getTime();
 
     if (expiresIn < 0) {
