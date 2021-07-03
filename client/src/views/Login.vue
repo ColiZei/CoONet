@@ -65,9 +65,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { mapActions } from "vuex";
+import { defineComponent, ref } from "vue";
+import { useStore } from "vuex";
+import { ActionTypes } from "@/store/modules/auth/action-types";
 import { Form, Field, ErrorMessage } from "vee-validate";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Login",
@@ -76,31 +78,32 @@ export default defineComponent({
     "vv-field": Field,
     "vv-error": ErrorMessage,
   },
-  data() {
-    return {
-      email: "",
-      password: "",
-      error: "",
-      isLoading: false,
-    };
-  },
-  methods: {
-    ...mapActions(["LOGIN"]),
-    async submitForm() {
-      this.isLoading = true;
-      try {
-        await this.LOGIN({
-          email: this.email,
-          password: this.password,
-        });
+  setup() {
+    const email = ref("");
+    const password = ref("");
+    const error = ref("");
+    const isLoading = ref(false);
 
-        this.$router.replace("/");
+    const store = useStore();
+    const router = useRouter();
+
+    const submitForm = async () => {
+      isLoading.value = true;
+
+      try {
+        await store.dispatch(ActionTypes.LOGIN, {
+          email: email.value,
+          password: password.value,
+        });
+        router.replace("/");
       } catch (err) {
-        this.error = err;
+        error.value = err;
       }
 
-      this.isLoading = false;
-    },
+      isLoading.value = false;
+    };
+
+    return { email, password, error, isLoading, submitForm };
   },
 });
 </script>
