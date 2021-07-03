@@ -48,6 +48,10 @@ Documentation: https://api-platform.com/docs/core/jwt/
 
 `npm install`
 
+## Environment Variables
+
+Copy `.env_example` to `.env`.
+
 # Developing
 
 ## Start Server
@@ -62,4 +66,4 @@ Documentation: https://api-platform.com/docs/core/jwt/
 
 `cd client/`
 
-`npm run server`
+`npm run serve`
